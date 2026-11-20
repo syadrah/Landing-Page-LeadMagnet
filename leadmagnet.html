@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TurbinHub — Hitung Ventilasi Pabrik Anda dengan Tepat</title>
+    <meta name="description" content="TurbinHub adalah platform marketplace multi-vendor turbin ventilator. Hitung kebutuhan ventilasi pabrik Anda dengan rumus akurat, hemat listrik, dan sesuai standar ACH.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ===== Reset & Base ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0F172A;
+            --primary-soft: #1E293B;
+            --text-body: #475569;
+            --text-muted: #64748B;
+            --accent: #FF6B2C;
+            --accent-hover: #E85A1C;
+            --accent-soft: #FFF4EE;
+            --bg: #FFFFFF;
+            --bg-soft: #F8FAFC;
+            --bg-muted: #F1F5F9;
+            --border: #E2E8F0;
+            --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.06);
+            --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.10);
+            --shadow-orange: 0 10px 28px rgba(255, 107, 44, 0.32);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-body);
+            background: var(--bg);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ===== Navbar ===== */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: saturate(180%) blur(12px);
+            -webkit-backdrop-filter: saturate(180%) blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 22px;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+        }
+
+        .logo-mark {
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--accent) 0%, #FF8B5C 100%);
+            border-radius: 10px;
+            box-shadow: 0 6px 16px rgba(255, 107, 44, 0.35);
+        }
+
+        .logo-mark svg {
+            width: 20px;
+            height: 20px;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            padding: 10px 16px;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--primary-soft);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .nav-cta {
+            margin-left: 8px;
+            padding: 10px 18px !important;
+            background: var(--primary);
+            color: #fff !important;
+            border-radius: 10px;
+        }
+
+        .nav-cta:hover {
+            background: var(--primary-soft);
+            color: #fff !important;
+            transform: translateY(-1px);
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: var(--primary);
+        }
+
+        .nav-toggle svg {
+            width: 26px;
+            height: 26px;
+        }
+
+        /* ===== Hero ===== */
+        .hero {
+            position: relative;
+            padding: 96px 0 80px;
+            background:
+                radial-gradient(1100px 500px at 85% -10%, rgba(255, 107, 44, 0.10), transparent 60%),
+                radial-gradient(900px 500px at 5% 110%, rgba(15, 23, 42, 0.05), transparent 60%),
+                var(--bg);
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px;
+            background: var(--accent-soft);
+            color: var(--accent-hover);
+            font-weight: 600;
+            font-size: 13px;
+            border-radius: 999px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 107, 44, 0.2);
+        }
+
+        .badge .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 0 4px rgba(255, 107, 44, 0.2);
+        }
+
+        .hero h1 {
+            font-size: clamp(34px, 5vw, 56px);
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: var(--primary);
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 .highlight {
+            color: var(--accent);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero h1 .highlight::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 4px;
+            height: 10px;
+            background: rgba(255, 107, 44, 0.18);
+            z-index: -1;
+            border-radius: 4px;
+        }
+
+        .hero p.subtitle {
+            font-size: 18px;
+            color: var(--text-body);
+            max-width: 540px;
+            margin-bottom: 36px;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 28px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 16px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+        }
+
+        .btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: var(--shadow-orange);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 34px rgba(255, 107, 44, 0.42);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--primary);
+            border: 1.5px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--primary);
+            background: var(--bg-soft);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 36px;
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat .num {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+        }
+
+        .stat .label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: relative;
+            aspect-ratio: 1 / 1;
+            border-radius: 24px;
+            background:
+                radial-gradient(circle at 30% 30%, #FFE8DA 0%, transparent 55%),
+                linear-gradient(135deg, #FFF7F2 0%, #F1F5F9 100%);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            display: grid;
+            place-items: center;
+            padding: 40px;
+        }
+
+        .turbine-illo {
+            width: 100%;
+            max-width: 360px;
+            height: auto;
+            filter: drop-shadow(0 20px 40px rgba(15, 23, 42, 0.12));
+        }
+
+        .floating-card {
+            position: absolute;
+            background: #fff;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            border-radius: 14px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .floating-card .ico {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            background: var(--accent-soft);
+            color: var(--accent);
+        }
+
+        .floating-card .ico svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .fc-top {
+            top: 24px;
+            left: -20px;
+        }
+
+        .fc-bottom {
+            bottom: 28px;
+            right: -16px;
+        }
+
+        .fc-bottom .ico {
+            background: #DCFCE7;
+            color: #16A34A;
+        }
+
+        /* ===== Section base ===== */
+        section {
+            padding: 96px 0;
+        }
+
+        .section-head {
+            text-align: center;
+            max-width: 680px;
+            margin: 0 auto 64px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .section-head h2 {
+            font-size: clamp(28px, 4vw, 40px);
+            color: var(--primary);
+            letter-spacing: -0.02em;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .section-head p {
+            font-size: 17px;
+            color: var(--text-body);
+        }
+
+        /* ===== Keunggulan ===== */
+        .advantages {
+            background: var(--bg-soft);
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 36px 28px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), #FF8B5C);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.35s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: transparent;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            display: grid;
+            place-items: center;
+            margin-bottom: 22px;
+        }
+
+        .card-icon svg {
+            width: 30px;
+            height: 30px;
+        }
+
+        .card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
+        }
+
+        .card p {
+            font-size: 15px;
+            color: var(--text-body);
+            line-height: 1.65;
+        }
+
+        /* ===== Download (penutup) ===== */
+        .download {
+            background:
+                radial-gradient(800px 400px at 50% -20%, rgba(255, 107, 44, 0.12), transparent 70%),
+                var(--primary);
+            color: #fff;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download::after {
+            content: "";
+            position: absolute;
+            bottom: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 300px;
+            background: radial-gradient(ellipse at center, rgba(255, 107, 44, 0.18), transparent 70%);
+            pointer-events: none;
+        }
+
+        .download-inner {
+            position: relative;
+            z-index: 2;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .download .eyebrow {
+            color: #FFB088;
+        }
+
+        .download h2 {
+            color: #fff;
+            font-size: clamp(30px, 4.5vw, 46px);
+            letter-spacing: -0.02em;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+
+        .download p {
+            font-size: 18px;
+            color: #CBD5E1;
+            margin-bottom: 40px;
+        }
+
+        .btn-giant {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--accent);
+            color: #fff;
+            padding: 22px 40px;
+            font-family: inherit;
+            font-size: 19px;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-orange);
+            text-decoration: none;
+        }
+
+        .btn-giant svg {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-giant:hover {
+            background: var(--accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 16px 40px rgba(255, 107, 44, 0.5);
+        }
+
+        .btn-giant:hover svg {
+            transform: translateY(2px);
+        }
+
+        .download-note {
+            margin-top: 22px;
+            font-size: 14px;
+            color: #94A3B8;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-note svg {
+            width: 16px;
+            height: 16px;
+            color: #FFB088;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            background: #0A0F1E;
+            color: #94A3B8;
+            padding: 56px 0 32px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            padding-bottom: 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer .logo {
+            color: #fff;
+        }
+
+        .footer .logo-mark {
+            box-shadow: 0 6px 16px rgba(255, 107, 44, 0.4);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            font-size: 14px;
+            font-weight: 500;
+            color: #94A3B8;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-size: 13px;
+        }
+
+        .footer-bottom .copyright {
+            color: #64748B;
+            padding-left: 350px;
+        }
+
+        .socials {
+            display: flex;
+            gap: 12px;
+        }
+
+        .socials a {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            background: rgba(255, 255, 255, 0.05);
+            display: grid;
+            place-items: center;
+            color: #94A3B8;
+            transition: all 0.2s ease;
+        }
+
+        .socials a:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .socials svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 960px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .hero-visual {
+                max-width: 440px;
+                margin: 0 auto;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+                max-width: 480px;
+                margin: 0 auto;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 72px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: #fff;
+                padding: 16px;
+                border-bottom: 1px solid var(--border);
+                box-shadow: var(--shadow-md);
+                align-items: stretch;
+                gap: 4px;
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .nav-links a {
+                padding: 12px 16px;
+            }
+
+            .nav-cta {
+                margin-left: 0;
+                text-align: center;
+            }
+
+            .nav-toggle {
+                display: inline-flex;
+            }
+
+            section {
+                padding: 72px 0;
+            }
+
+            .hero {
+                padding: 64px 0 56px;
+            }
+
+            .hero-stats {
+                gap: 24px;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .container {
+                padding: 0 18px;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .btn-ghost {
+                width: auto;
+            }
+
+            .hero-actions {
+                gap: 12px;
+            }
+
+            .btn-giant {
+                width: 100%;
+                padding: 20px 24px;
+                font-size: 17px;
+            }
+
+            .floating-card {
+                display: none;
+            }
+
+            .footer-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+                    /* Animasi Logo Mutar */
+            .logo-mark i {
+                animation: spin 18s linear infinite;
+            }
+
+            @keyframes spin {
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <header class="navbar">
+        <div class="container nav-inner">
+            <a href="#" class="logo" aria-label="TurbinHub">
+                <span class="logo-mark">
+                    <i class="fa-solid fa-fan" style="font-size: 20px; color: #fff;"></i>
+                </span>
+                TurbinHub
+            </a>
+
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#download" class="nav-cta">Download E-book</a></li>
+                </ul>
+              </nav>
+            <button class="nav-toggle" id="navToggle" aria-label="Buka menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <line x1="3" y1="12" x2="21" y2="12"/>
+                    <line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-copy">
+                <span class="badge">
+                    <span class="dot"></span>
+                    Marketplace Turbin Ventilator #1 di Indonesia
+                </span>
+                <h1>
+                    Hitung Ventilasi Pabrik Anda dengan <span class="highlight">Tepat</span>, Tanpa Overbudget
+                </h1>
+                <p class="subtitle">
+                    TurbinHub membantu Anda menghitung kebutuhan turbin ventilator secara akurat berdasarkan rumus
+                    industri, standar ACH (Air Changes per Hour), dan luas ruangan. Hentikan spekulasi —
+                    mulai dari perhitungan yang benar.
+                </p>
+                <div class="hero-actions">
+                    <a href="#download" class="btn btn-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Download E-book Gratis
+                    </a>
+                    <a href="#advantages" class="btn btn-ghost">Lihat Keunggulan</a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="num">500+</div>
+                        <div class="label">Pabrik terbantu</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num">98%</div>
+                        <div class="label">Akurasi perhitungan</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num">ACH</div>
+                        <div class="label">Standar industri</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <svg class="turbine-illo" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Base ring -->
+                    <circle cx="120" cy="120" r="92" fill="#fff" stroke="#E2E8F0" stroke-width="2"/>
+                    <circle cx="120" cy="120" r="76" fill="#FFF7F2" stroke="#FFD8C2" stroke-width="1.5"/>
+                    <!-- Turbine blades -->
+                    <g transform="translate(120 120)">
+                        <g fill="#FF6B2C" opacity="0.92">
+                            <path d="M0 0 Q 18 -28 0 -68 Q -18 -28 0 0 Z" transform="rotate(0)"/>
+                            <path d="M0 0 Q 18 -28 0 -68 Q -18 -28 0 0 Z" transform="rotate(45)"/>
+                            <path d="M0 0 Q 18 -28 0 -68 Q -18 -28 0 0 Z" transform="rotate(90)"/>
+                            <path d="M0 0 Q 18 -28 0 -68 Q -18 -28 0 0 Z" transform="rotate(135)"/>
+                            <path d="M0 0 Q 18 -28 0 -68 Q -18 -28 0 0 Z" transform="rotate(180)"/>
+                            <path d="M0 0 Q 18 -28 0 -68 Q -18 -28 0 0 Z" transform="rotate(225)"/>
+                            <path d="M0 0 Q 18 -28 0 -68 Q -18 -28 0 0 Z" transform="rotate(270)"/>
+                            <path d="M0 0 Q 18 -28 0 -68 Q -18 -28 0 0 Z" transform="rotate(315)"/>
+                        </g>
+                        <circle r="16" fill="#0F172A"/>
+                        <circle r="7" fill="#FF8B5C"/>
+                    </g>
+                    <!-- Airflow arrows -->
+                    <g stroke="#94A3B8" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.7">
+                        <path d="M30 110 Q 70 110 100 110" stroke-dasharray="4 5"/>
+                        <path d="M30 130 Q 70 130 100 130" stroke-dasharray="4 5"/>
+                        <path d="M210 110 Q 170 110 140 110" stroke-dasharray="4 5"/>
+                        <path d="M210 130 Q 170 130 140 130" stroke-dasharray="4 5"/>
+                    </g>
+                    <!-- Up arrow (exhaust) -->
+                    <g stroke="#16A34A" stroke-width="3" stroke-linecap="round" fill="none">
+                        <line x1="120" y1="200" x2="120" y2="170"/>
+                        <polyline points="112,178 120,170 128,178"/>
+                    </g>
+                </svg>
+
+                <div class="floating-card fc-top">
+                    <span class="ico">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                    </span>
+                    <div>
+                        <div>ACH 8/jam</div>
+                        <div style="font-size:11px;color:var(--text-muted);font-weight:500;">Standar terpenuhi</div>
+                    </div>
+                </div>
+
+                <div class="floating-card fc-bottom">
+                    <span class="ico">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="1" x2="12" y2="23"/>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                        </svg>
+                    </span>
+                    <div>
+                        <div>Hemat 35% Listrik</div>
+                        <div style="font-size:11px;color:var(--text-muted);font-weight:500;">vs exhaust fan</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== KEUNGGULAN ===== -->
+    <section class="advantages" id="advantages">
+        <div class="container">
+            <div class="section-head">
+                <span class="eyebrow">Keunggulan TurbinHub</span>
+                <h2>Mengapa Perhitungan Ventilasi Anda Lebih Akurat</h2>
+                <p>Tiga fondasi yang membuat TurbinHub dipercaya untuk menghitung kebutuhan ventilasi pabrik secara tepat dan efisien.</p>
+            </div>
+
+            <div class="cards">
+                <!-- Card 1 -->
+                <article class="card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="2" width="16" height="20" rx="2"/>
+                            <line x1="8" y1="6" x2="16" y2="6"/>
+                            <line x1="8" y1="10" x2="16" y2="10"/>
+                            <line x1="8" y1="14" x2="10" y2="14"/>
+                            <line x1="14" y1="14" x2="16" y2="14"/>
+                            <line x1="8" y1="18" x2="10" y2="18"/>
+                            <line x1="14" y1="18" x2="16" y2="18"/>
+                        </svg>
+                    </div>
+                    <h3>Rumus Akurat</h3>
+                    <p>Perhitungan volume ruangan, ACH, dan kapasitas turbin dihitung dengan rumus industri yang teruji. Hasilnya bisa Anda pertanggungjawabkan ke manajemen tanpa keraguan.</p>
+                </article>
+
+                <!-- Card 2 -->
+                <article class="card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                    </div>
+                    <h3>Hemat Listrik</h3>
+                    <p>Turbin ventilator bekerja tanpa daya listrik, menghemat biaya operasional hingga 35% dibandingkan exhaust fan konvensional. Investasi yang segera balik modal.</p>
+                </article>
+
+                <!-- Card 3 -->
+                <article class="card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 12l2 2 4-4"/>
+                            <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.5 0 4.76 1.02 6.39 2.66"/>
+                        </svg>
+                    </div>
+                    <h3>Sesuai Standar ACH</h3>
+                    <p>Setiap rekomendasi jumlah turbin disesuaikan dengan standar Air Changes per Hour (ACH) untuk jenis ruangan pabrik, gudang, maupun area produksi Anda.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== DOWNLOAD / PENUTUP ===== -->
+    <section class="download" id="download">
+        <div class="container download-inner">
+            <span class="eyebrow">E-book Gratis</span>
+            <h2>Siap Menghitung Ventilasi Pabrik Anda?</h2>
+            <p>Download e-book lengkap berisi panduan rumus, tabel ACH per jenis industri, dan checklist instalasi turbin ventilator. Semuanya gratis, tanpa perlu mengisi form.</p>
+
+            <a href="ebook.html" target="_blank" rel="noopener noreferrer" class="btn-giant">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="12" y1="18" x2="12" y2="12"/>
+                    <polyline points="9 15 12 12 15 15"/>
+                </svg>
+                Download E-book Sekarang (PDF)
+            </a>
+
+            <div class="download-note">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                File PDF — Tidak perlu registrasi, langsung dibuka di Google Drive.
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <a href="#" class="logo">
+                    <span class="logo-mark">
+                        <i class="fa-solid fa-fan" style="font-size: 20px; color: #fff;"></i>
+                    </span>
+                    TurbinHub
+                </a>
+                <ul class="footer-links">
+                    <li><a href="#download">Download E-book</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="copyright">&copy; 2026 TurbinHub. All rights reserved. Marketplace Multi-Vendor Turbin Ventilator.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile nav toggle
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        // Close mobile menu when a link is tapped
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+            });
+        });
+    </script>
+</body>
+</html>

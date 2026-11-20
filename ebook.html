@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-book: Panduan Menghitung Kapasitas Ventilasi Pabrik — TurbinHub</title>
+    <meta name="description" content="E-book edukatif TurbinHub: panduan langkah demi langkah menghitung kapasitas ventilasi pabrik dengan rumus Volume × ACH, tabel standar ACH, studi kasus, dan checklist pembelian turbin.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ===== Reset & Base ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0F172A;
+            --primary-soft: #1E293B;
+            --text-body: #475569;
+            --text-muted: #64748B;
+            --accent: #FF6B2C;
+            --accent-hover: #E85A1C;
+            --accent-soft: #FFF4EE;
+            --bg: #FFFFFF;
+            --bg-soft: #F8FAFC;
+            --bg-muted: #F1F5F9;
+            --border: #E2E8F0;
+            --border-soft: #EEF2F6;
+            --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.06);
+            --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.10);
+            --shadow-orange: 0 10px 28px rgba(255, 107, 44, 0.32);
+            --code-bg: #F1F5F9;
+            --table-head: #0F172A;
+            --table-row-alt: #F8FAFC;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text-body);
+            background: var(--bg);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-size: 17px;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== Top Bar (sticky) ===== */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: saturate(180%) blur(12px);
+            -webkit-backdrop-filter: saturate(180%) blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .topbar-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+            gap: 16px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 18px;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+        }
+
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--accent) 0%, #FF8B5C 100%);
+            border-radius: 8px;
+            box-shadow: 0 6px 16px rgba(255, 107, 44, 0.35);
+        }
+
+        .logo-mark svg {
+            width: 18px;
+            height: 18px;
+            color: #fff;
+        }
+
+        .topbar-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .topbar-meta .sep {
+            margin: 0 8px;
+            color: var(--border);
+        }
+
+        .btn-print {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: var(--accent);
+            color: #fff !important;
+            border: none;
+            border-radius: 10px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-orange);
+            white-space: nowrap;
+        }
+
+        .btn-print:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-print svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ===== Cover / Header ===== */
+        .ebook-cover {
+            padding: 72px 0 48px;
+            text-align: center;
+            background:
+                radial-gradient(900px 400px at 50% -20%, rgba(255, 107, 44, 0.08), transparent 60%),
+                var(--bg);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ebook-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: var(--accent-soft);
+            color: var(--accent-hover);
+            font-weight: 600;
+            font-size: 12px;
+            border-radius: 999px;
+            margin-bottom: 22px;
+            border: 1px solid rgba(255, 107, 44, 0.2);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .ebook-cover h1 {
+            font-size: clamp(30px, 4.5vw, 44px);
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.025em;
+            line-height: 1.15;
+            margin-bottom: 14px;
+            max-width: 720px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .ebook-cover .subtitle {
+            font-size: 17px;
+            color: var(--text-body);
+            max-width: 620px;
+            margin: 0 auto 28px;
+        }
+
+        .ebook-meta {
+            display: inline-flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px 24px;
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .ebook-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ebook-meta svg {
+            width: 14px;
+            height: 14px;
+            color: var(--accent);
+        }
+
+        /* ===== Article Body ===== */
+        .article {
+            padding: 64px 0 80px;
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: var(--bg-soft);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px 28px;
+            margin-bottom: 56px;
+        }
+
+        .toc-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 14px;
+        }
+
+        .toc-title svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .toc ol {
+            list-style: none;
+            counter-reset: toc;
+        }
+
+        .toc li {
+            counter-increment: toc;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border-soft);
+            font-size: 15px;
+        }
+
+        .toc li:last-child {
+            border-bottom: none;
+        }
+
+        .toc li::before {
+            content: counter(toc, decimal-leading-zero);
+            display: inline-block;
+            width: 32px;
+            font-weight: 700;
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .toc a {
+            color: var(--primary-soft);
+            font-weight: 600;
+        }
+
+        .toc a:hover {
+            color: var(--accent);
+        }
+
+        /* Chapter */
+        .chapter {
+            margin-bottom: 64px;
+            scroll-margin-top: 84px;
+        }
+
+        .chapter:last-child {
+            margin-bottom: 0;
+        }
+
+        .chapter-num {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 10px;
+        }
+
+        .chapter h2 {
+            font-size: clamp(24px, 3.2vw, 30px);
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+            line-height: 1.25;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border);
+            position: relative;
+        }
+
+        .chapter h2::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 64px;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        .chapter h3 {
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 32px;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .chapter p {
+            margin-bottom: 18px;
+            color: var(--text-body);
+            font-size: 16.5px;
+            line-height: 1.75;
+        }
+
+        .chapter p strong {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .chapter ul, .chapter ol {
+            margin: 0 0 20px 0;
+            padding-left: 24px;
+        }
+
+        .chapter li {
+            margin-bottom: 10px;
+            color: var(--text-body);
+            font-size: 16.5px;
+            line-height: 1.7;
+        }
+
+        .chapter li::marker {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Callout */
+        .callout {
+            background: var(--accent-soft);
+            border-left: 4px solid var(--accent);
+            border-radius: 0 12px 12px 0;
+            padding: 18px 22px;
+            margin: 24px 0;
+        }
+
+        .callout-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            color: var(--accent-hover);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+        }
+
+        .callout-title svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .callout p {
+            margin: 0;
+            color: var(--primary-soft);
+            font-size: 15.5px;
+        }
+
+        /* Formula box */
+        .formula {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 24px 0;
+            text-align: center;
+        }
+
+        .formula-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 12px;
+        }
+
+        .formula-eq {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.01em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .formula-eq .op {
+            color: var(--accent);
+            margin: 0 6px;
+        }
+
+        .formula-eq .var {
+            color: var(--accent-hover);
+        }
+
+        .formula-note {
+            margin-top: 12px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Table */
+        .table-wrap {
+            margin: 24px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        table.ach-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+        }
+
+        table.ach-table thead {
+            background: var(--table-head);
+        }
+
+        table.ach-table th {
+            padding: 14px 18px;
+            text-align: left;
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        table.ach-table th:not(:last-child) {
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        table.ach-table td {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-soft);
+            color: var(--text-body);
+            vertical-align: top;
+        }
+
+        table.ach-table td:not(:last-child) {
+            border-right: 1px solid var(--border-soft);
+        }
+
+        table.ach-table tbody tr:nth-child(even) {
+            background: var(--table-row-alt);
+        }
+
+        table.ach-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        table.ach-table td.room {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        table.ach-table td.ach {
+            font-weight: 700;
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+
+        table.ach-table td.note {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Case study steps */
+        .case-study {
+            background: var(--bg-soft);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            margin: 24px 0;
+        }
+
+        .case-study-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .case-study-title svg {
+            width: 22px;
+            height: 22px;
+            color: var(--accent);
+        }
+
+        .step {
+            display: flex;
+            gap: 16px;
+            padding: 16px 0;
+            border-top: 1px solid var(--border-soft);
+        }
+
+        .step:first-of-type {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        .step-num {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: 14px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .step-body {
+            flex: 1;
+        }
+
+        .step-body h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+
+        .step-body p {
+            margin: 0 0 8px 0;
+            font-size: 15px;
+            line-height: 1.65;
+        }
+
+        .step-result {
+            display: inline-block;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-weight: 700;
+            color: var(--primary);
+            font-variant-numeric: tabular-nums;
+            font-size: 15px;
+            margin-top: 4px;
+        }
+
+        .step-result strong {
+            color: var(--accent);
+        }
+
+        /* Checklist */
+        .checklist {
+            margin: 24px 0;
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 14px 16px;
+            background: var(--bg-soft);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-size: 15.5px;
+            line-height: 1.6;
+        }
+
+        .checklist li .check-ico {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            display: grid;
+            place-items: center;
+            margin-top: 1px;
+        }
+
+        .checklist li .check-ico svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .checklist li strong {
+            color: var(--primary);
+        }
+
+        /* Summary card */
+        .summary-card {
+            background: linear-gradient(135deg, var(--primary) 0%, #1E293B 100%);
+            color: #fff;
+            border-radius: 16px;
+            padding: 32px;
+            margin: 32px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card::after {
+            content: "";
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 107, 44, 0.25), transparent 70%);
+            pointer-events: none;
+        }
+
+        .summary-card .label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #FFB088;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .summary-card h3 {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .summary-card .big-number {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--accent);
+            line-height: 1;
+            letter-spacing: -0.03em;
+            position: relative;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .summary-card .unit {
+            font-size: 16px;
+            color: #CBD5E1;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .summary-card .breakdown {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: #CBD5E1;
+            position: relative;
+        }
+
+        .summary-card .breakdown div {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+        }
+
+        .summary-card .breakdown strong {
+            color: #fff;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* CTA at end */
+        .cta-end {
+            text-align: center;
+            margin-top: 56px;
+            padding: 40px 32px;
+            background: var(--accent-soft);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 107, 44, 0.2);
+        }
+
+        .cta-end h3 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
+        }
+
+        .cta-end p {
+            color: var(--text-body);
+            font-size: 15.5px;
+            margin-bottom: 22px;
+        }
+
+        .cta-end .btn-print {
+            box-shadow: var(--shadow-orange);
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            background: #0A0F1E;
+            color: #94A3B8;
+            padding: 40px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            text-align: center;
+        }
+
+        .footer .logo {
+            justify-content: center;
+            color: #fff;
+            margin-bottom: 14px;
+        }
+
+        .footer .copyright {
+            font-size: 13px;
+            color: #64748B;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 640px) {
+            body {
+                font-size: 16px;
+            }
+
+            .container {
+                padding: 0 18px;
+            }
+
+            .topbar-meta {
+                display: none;
+            }
+
+            .btn-print span {
+                display: none;
+            }
+
+            .btn-print {
+                padding: 10px 12px;
+            }
+
+            .ebook-cover {
+                padding: 48px 0 32px;
+            }
+
+            .article {
+                padding: 48px 0 56px;
+            }
+
+            .toc {
+                padding: 18px 20px;
+            }
+
+            .chapter {
+                margin-bottom: 48px;
+            }
+
+            .case-study {
+                padding: 22px 18px;
+            }
+
+            .summary-card {
+                padding: 24px;
+            }
+
+            .summary-card .big-number {
+                font-size: 38px;
+            }
+
+            table.ach-table {
+                font-size: 14px;
+            }
+
+            table.ach-table th,
+            table.ach-table td {
+                padding: 11px 12px;
+            }
+
+            table.ach-table td.note {
+                font-size: 13px;
+            }
+
+            .checklist li {
+                font-size: 14.5px;
+                padding: 12px 14px;
+            }
+        }
+
+        /* ============================================ */
+        /* ===== PRINT STYLES — @media print ========= */
+        /* ============================================ */
+        @media print {
+            @page {
+                size: A4;
+                margin: 18mm 16mm 16mm 16mm;
+            }
+
+            html, body {
+                background: #fff !important;
+                color: #000 !important;
+                font-size: 11.5pt;
+                line-height: 1.55;
+            }
+
+            /* Hide chrome / interactive UI */
+            .topbar,
+            .cta-end,
+            .ebook-meta,
+            .toc,
+            .footer .logo {
+                display: none !important;
+            }
+
+            .ebook-cover {
+                padding: 0 0 12pt 0 !important;
+                background: none !important;
+                border-bottom: 1.5pt solid #000 !important;
+                text-align: left !important;
+            }
+
+            .ebook-tag {
+                border: 1pt solid #000 !important;
+                background: none !important;
+                color: #000 !important;
+                padding: 3pt 8pt !important;
+            }
+
+            .ebook-cover h1 {
+                color: #000 !important;
+                font-size: 22pt !important;
+                margin: 8pt 0 4pt 0 !important;
+                max-width: none !important;
+            }
+
+            .ebook-cover .subtitle {
+                color: #333 !important;
+                font-size: 11pt !important;
+                margin: 0 0 0 0 !important;
+                max-width: none !important;
+            }
+
+            .article {
+                padding: 12pt 0 0 0 !important;
+            }
+
+            /* Avoid breaking inside cards/tables */
+            .chapter,
+            .case-study,
+            .summary-card,
+            .callout,
+            .formula,
+            .table-wrap,
+            .checklist li,
+            .step,
+            h2, h3, h4 {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .chapter {
+                margin-bottom: 18pt !important;
+            }
+
+            .chapter h2 {
+                font-size: 16pt !important;
+                color: #000 !important;
+                border-bottom: 1.5pt solid #000 !important;
+                padding-bottom: 6pt !important;
+                margin-bottom: 10pt !important;
+            }
+
+            .chapter h2::after {
+                background: #000 !important;
+            }
+
+            .chapter h3 {
+                color: #000 !important;
+                font-size: 13pt !important;
+                margin-top: 14pt !important;
+            }
+
+            .chapter p,
+            .chapter li {
+                color: #222 !important;
+                font-size: 11.5pt !important;
+                line-height: 1.55 !important;
+            }
+
+            .chapter li::marker,
+            .chapter-num,
+            .formula-label,
+            .callout-title {
+                color: #000 !important;
+            }
+
+            /* Force color overrides */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* Simplify formula box */
+            .formula {
+                background: #f5f5f5 !important;
+                border: 1pt solid #999 !important;
+                padding: 10pt 12pt !important;
+                border-radius: 4pt !important;
+            }
+
+            .formula-eq {
+                color: #000 !important;
+                font-size: 14pt !important;
+            }
+
+            .formula-eq .op,
+            .formula-eq .var {
+                color: #000 !important;
+            }
+
+            .formula-note {
+                color: #555 !important;
+            }
+
+            /* Callout becomes a thin-bordered note */
+            .callout {
+                background: #fafafa !important;
+                border-left: 3pt solid #000 !important;
+                border-radius: 0 !important;
+                padding: 8pt 12pt !important;
+            }
+
+            .callout-title,
+            .callout p {
+                color: #000 !important;
+            }
+
+            /* Table — black & white friendly */
+            .table-wrap {
+                border: 1pt solid #000 !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+            }
+
+            table.ach-table {
+                font-size: 10.5pt !important;
+            }
+
+            table.ach-table thead {
+                background: #000 !important;
+            }
+
+            table.ach-table th {
+                color: #fff !important;
+                padding: 7pt 9pt !important;
+                border-right: 1pt solid #fff !important;
+            }
+
+            table.ach-table td {
+                color: #000 !important;
+                padding: 7pt 9pt !important;
+                border-right: 1pt solid #ccc !important;
+                border-bottom: 1pt solid #ccc !important;
+            }
+
+            table.ach-table tbody tr:nth-child(even) {
+                background: #f5f5f5 !important;
+            }
+
+            table.ach-table td.room,
+            table.ach-table td.ach {
+                color: #000 !important;
+            }
+
+            /* Case study & summary card */
+            .case-study {
+                background: #fafafa !important;
+                border: 1pt solid #999 !important;
+                border-radius: 4pt !important;
+                padding: 12pt !important;
+            }
+
+            .case-study-title {
+                color: #000 !important;
+            }
+
+            .case-study-title svg {
+                color: #000 !important;
+            }
+
+            .step-num {
+                background: #000 !important;
+                color: #fff !important;
+            }
+
+            .step-body h4,
+            .step-body p,
+            .step-result {
+                color: #000 !important;
+            }
+
+            .step-result {
+                background: #fff !important;
+                border: 1pt solid #999 !important;
+            }
+
+            .step-result strong {
+                color: #000 !important;
+            }
+
+            /* Summary card becomes white bg with border */
+            .summary-card {
+                background: #fff !important;
+                color: #000 !important;
+                border: 1.5pt solid #000 !important;
+                border-radius: 4pt !important;
+                padding: 14pt !important;
+            }
+
+            .summary-card::after {
+                display: none !important;
+            }
+
+            .summary-card .label,
+            .summary-card h3,
+            .summary-card .breakdown,
+            .summary-card .breakdown strong {
+                color: #000 !important;
+            }
+
+            .summary-card .breakdown {
+                border-top: 1pt solid #999 !important;
+            }
+
+            .summary-card .big-number {
+                color: #000 !important;
+            }
+
+            .summary-card .unit {
+                color: #333 !important;
+            }
+
+            /* Checklist */
+            .checklist li {
+                background: #fafafa !important;
+                border: 1pt solid #999 !important;
+                border-radius: 4pt !important;
+                padding: 8pt 10pt !important;
+                font-size: 11pt !important;
+            }
+
+            .checklist li .check-ico {
+                background: #fff !important;
+                border: 1pt solid #000 !important;
+                color: #000 !important;
+            }
+
+            .checklist li strong {
+                color: #000 !important;
+            }
+
+            /* Footer stays visible (just copyright) */
+            .footer {
+                background: #fff !important;
+                color: #555 !important;
+                border-top: 1pt solid #000 !important;
+                padding: 10pt 0 0 0 !important;
+                margin-top: 14pt !important;
+            }
+
+            .footer .copyright {
+                color: #555 !important;
+                font-size: 9.5pt !important;
+            }
+
+            /* Link colors */
+            a {
+                color: #000 !important;
+                text-decoration: underline;
+            }
+
+            /* Keep headings with next content */
+            h2, h3, h4 {
+                page-break-after: avoid;
+            }
+                        /* Animasi Logo Mutar */
+            .logo-mark i {
+                animation: spin 18s linear infinite;
+            }
+
+            @keyframes spin {
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOP BAR ===== -->
+    <header class="topbar no-print">
+        <div class="container topbar-inner">
+            <a href="index.html" class="logo" aria-label="TurbinHub">
+                <span class="logo-mark">
+                    <i class="fa-solid fa-fan" style="font-size: 18px; color: #fff;"></i>
+                </span>
+                TurbinHub
+            </a>
+            <div class="topbar-meta">
+                <span>E-book Gratis</span>
+                <span class="sep">•</span>
+                <span>Edisi 2026</span>
+            </div>
+            <button class="btn-print" onclick="window.print()" aria-label="Download atau Print PDF">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 6 2 18 2 18 9"/>
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                    <rect x="6" y="14" width="12" height="8"/>
+                </svg>
+                <span>Download / Print PDF</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ===== COVER ===== -->
+    <section class="ebook-cover">
+        <div class="container">
+            <span class="ebook-tag">E-book TurbinHub</span>
+            <h1>Panduan Menghitung Kapasitas Ventilasi Pabrik</h1>
+            <p class="subtitle">Panduan edukatif untuk insinyur, kontraktor, dan pemilik pabrik: dari rumus dasar hingga studi kasus lengkap, agar kebutuhan turbin ventilator terhitung tepat tanpa overbudget.</p>
+            <div class="ebook-meta">
+                <span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    5 Bab
+                </span>
+                <span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    ± 12 Menit Baca
+                </span>
+                <span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Level Pemula – Menengah
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ARTICLE BODY ===== -->
+    <article class="article">
+        <div class="container">
+
+            <!-- TOC -->
+            <nav class="toc no-print">
+                <div class="toc-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="8" y1="6" x2="21" y2="6"/>
+                        <line x1="8" y1="12" x2="21" y2="12"/>
+                        <line x1="8" y1="18" x2="21" y2="18"/>
+                        <line x1="3" y1="6" x2="3.01" y2="6"/>
+                        <line x1="3" y1="12" x2="3.01" y2="12"/>
+                        <line x1="3" y1="18" x2="3.01" y2="18"/>
+                    </svg>
+                    Daftar Isi
+                </div>
+                <ol>
+                    <li><a href="#bab-1">Pentingnya Sirkulasi Udara Pabrik</a></li>
+                    <li><a href="#bab-2">Rumus Utama Kapasitas Hisap (m³/h)</a></li>
+                    <li><a href="#bab-3">Tabel Standar ACH</a></li>
+                    <li><a href="#bab-4">Contoh Perhitungan</a></li>
+                    <li><a href="#bab-5">Checklist Sebelum Membeli Turbin</a></li>
+                </ol>
+            </nav>
+
+            <!-- ===== BAB 1 ===== -->
+            <section class="chapter" id="bab-1">
+                <span class="chapter-num">Bab 01</span>
+                <h2>Pentingnya Sirkulasi Udara Pabrik</h2>
+
+                <p>Sirkulasi udara adalah urat nadi sebuah pabrik. Tanpa pertukaran udara yang memadai, polutan hasil proses produksi — mulai dari debu, uap kimia, panas mesin, hingga kelembaban — akan terakumulasi di dalam ruangan. Dampaknya bukan hanya menurunkan produktivitas tenaga kerja, tetapi juga berpotensi merusak peralatan serta memicu kebakaran atau ledakan pada lingkungan yang <em>hazardous</em>.</p>
+
+                <p>Secara fisiologis, manusia membutuhkan udara bersih untuk menjaga konsentrasi dan kesehatan pernapasan. Di pabrik dengan aktivitas fisik tinggi, kekurangan oksigen sebesar 0,5% saja sudah dapat menurunkan fokus pekerja secara signifikan. Sementara dari sisi teknis, ruang yang pengap akan mempercepat korosi pada mesin, memperpendek umur elektronik panel, dan meningkatkan biaya pemeliharaan tahunan.</p>
+
+                <h3>Mengapa Sirkulasi Lebih Penting Daripada Sekadar "Panas atau Tidak"</h3>
+
+                <p>Banyak pemilik pabrik menilai ventilasi hanya dari satu parameter: <strong>apakah ruangan terasa panas</strong>. Pendekatan ini keliru karena suhu bukan satu-satunya indikator kualitas udara. Sebuah ruangan bisa terasa sejuk tetapi tetap berbahaya jika kadar CO₂, debu halus, atau gas hasil pembakaran melebihi ambang aman.</p>
+
+                <p>Indikator yang lebih tepat adalah <strong>Air Changes per Hour (ACH)</strong> — yaitu berapa kali seluruh volume udara di dalam ruangan diganti dengan udara baru setiap satu jam. Semakin tinggi aktivitas dan tingkat polutan pabrik, semakin tinggi pula ACH yang dibutuhkan. Bab berikutnya akan menjelaskan bagaimana ACH ini menjadi inti dari perhitungan kapasitas ventilasi.</p>
+
+                <div class="callout">
+                    <div class="callout-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        Inti Bab Ini
+                    </div>
+                    <p>Ventilasi pabrik bukan sekadar pendinginan, melainkan pengendalian mutu udara. Metrik yang benar untuk mengukurnya adalah <strong>ACH</strong>, bukan hanya suhu ruangan.</p>
+                </div>
+            </section>
+
+            <!-- ===== BAB 2 ===== -->
+            <section class="chapter" id="bab-2">
+                <span class="chapter-num">Bab 02</span>
+                <h2>Rumus Utama Kapasitas Hisap (m³/h)</h2>
+
+                <p>Setelah memahami konsep ACH, langkah berikutnya adalah menghitung berapa besar kapasitas hisap udara (dalam meter kubik per jam, disingkat <strong>m³/h</strong>) yang dibutuhkan ruangan Anda. Untuk itu, gunakan rumus dasar berikut:</p>
+
+                <div class="formula">
+                    <div class="formula-label">Rumus Kapasitas Hisap</div>
+                    <div class="formula-eq">
+                        <span class="var">Q</span> <span class="op">=</span> <span class="var">V</span> <span class="op">×</span> <span class="var">ACH</span>
+                    </div>
+                    <div class="formula-note">
+                        Q = Kapasitas hisap (m³/h) &nbsp;•&nbsp; V = Volume ruangan (m³) &nbsp;•&nbsp; ACH = Air Changes per Hour
+                    </div>
+                </div>
+
+                <h3>1. Menghitung Volume Ruangan (V)</h3>
+
+                <p>Volume ruangan adalah hasil perkalian panjang, lebar, dan tinggi ruangan. Pastikan semua ukuran dalam satuan meter agar hasilnya dalam meter kubik (m³).</p>
+
+                <div class="formula">
+                    <div class="formula-label">Rumus Volume</div>
+                    <div class="formula-eq">
+                        <span class="var">V</span> <span class="op">=</span> <span class="var">P</span> <span class="op">×</span> <span class="var">L</span> <span class="op">×</span> <span class="var">T</span>
+                    </div>
+                </div>
+
+                <p>Contoh: pabrik berukuran 20 m × 10 m dengan tinggi 6 m memiliki volume 1.200 m³.</p>
+
+                <h3>2. Menentukan Nilai ACH</h3>
+
+                <p>Nilai ACH tidak ditentukan secara asal — ia mengikuti standar industri berdasarkan fungsi ruangan. Pabrik tekstil membutuhkan ACH berbeda dengan gudang kering atau dapur komersial. Standar ACH yang umum digunakan di Indonesia akan dijabarkan pada <a href="#bab-3">Bab 3</a>.</p>
+
+                <h3>3. Mengalikan Volume dengan ACH untuk Mendapatkan Q</h3>
+
+                <p>Jika volume pabrik Anda 1.200 m³ dan ACH yang dipilih adalah 10, maka kapasitas hisap yang dibutuhkan adalah:</p>
+
+                <div class="formula">
+                    <div class="formula-eq">
+                        Q = 1.200 m³ <span class="op">×</span> 10 = <span class="var">12.000 m³/h</span>
+                    </div>
+                </div>
+
+                <div class="callout">
+                    <div class="callout-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                        </svg>
+                        Catatan Penting
+                    </div>
+                    <p>Nilai Q yang dihasilkan adalah <strong>total kapasitas hisap</strong> yang dibutuhkan. Jika Anda memasang turbin dengan kapasitas 2.800 m³/h per unit, maka jumlah unit yang dibutuhkan = Q ÷ 2.800. Detail perhitungan lengkap ada di <a href="#bab-4">Bab 4</a>.</p>
+                </div>
+            </section>
+
+            <!-- ===== BAB 3 ===== -->
+            <section class="chapter" id="bab-3">
+                <span class="chapter-num">Bab 03</span>
+                <h2>Tabel Standar ACH</h2>
+
+                <p>Berikut adalah rentang nilai ACH yang umum digunakan untuk berbagai jenis ruangan industri dan komersial. Tabel ini disusun berdasarkan standar umum ventilasi industri dan dapat dijadikan acuan awal untuk pemilihan nilai ACH pada perhitungan Anda.</p>
+
+                <div class="table-wrap">
+                    <table class="ach-table">
+                        <thead>
+                            <tr>
+                                <th style="width:28%">Jenis Ruangan</th>
+                                <th style="width:24%">Standar ACH</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="room">Pabrik</td>
+                                <td class="ach">8 – 12</td>
+                                <td class="note">Bergantung pada jenis proses produksi, kadar debu, dan beban panas mesin.</td>
+                            </tr>
+                            <tr>
+                                <td class="room">Gudang</td>
+                                <td class="ach">4 – 6</td>
+                                <td class="note">Cukup untuk menjaga kelembaban terkontrol dan mencegah jamur pada barang tersimpan.</td>
+                            </tr>
+                            <tr>
+                                <td class="room">Dapur</td>
+                                <td class="ach">15 – 30</td>
+                                <td class="note">Penting untuk mengeluarkan asap, uap minyak, dan bau. Dapur komersial ACH lebih tinggi.</td>
+                            </tr>
+                            <tr>
+                                <td class="room">Kantor</td>
+                                <td class="ach">6 – 10</td>
+                                <td class="note">Menjaga kenyamanan dan produktivitas pekerja, mengontrol CO₂ dari pernapasan.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Cara Memilih Nilai ACH yang Tepat</h3>
+
+                <p>Jika ruangan Anda berada pada batas bawah kategori (misalnya pabrik dengan debu rendah), pilih nilai ACH minimum. Sebaliknya, jika aktivitas menghasilkan banyak polutan atau panas tinggi, pilih nilai ACH maksimum. Untuk pabrik dengan karakteristik campuran, ambil nilai tengah sebagai titik awal yang aman.</p>
+
+                <div class="callout">
+                    <div class="callout-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                            <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                        </svg>
+                        Peringatan
+                    </div>
+                    <p>Nilai ACH pada tabel adalah acuan umum. Untuk pabrik yang memproses bahan kimia, gas beracun, atau material mudah terbakar, konsultasikan dengan insinyur mekanikal atau regulator terkait — ACH yang dibutuhkan bisa jauh lebih tinggi.</p>
+                </div>
+            </section>
+
+            <!-- ===== BAB 4 ===== -->
+            <section class="chapter" id="bab-4">
+                <span class="chapter-num">Bab 04</span>
+                <h2>Contoh Perhitungan</h2>
+
+                <p>Untuk memahami penerapan rumus dan tabel di atas, mari kita kerjakan satu studi kasus konkret dari awal hingga penentuan jumlah turbin yang harus dipasang.</p>
+
+                <div class="case-study">
+                    <div class="case-study-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                            <line x1="12" y1="22.08" x2="12" y2="12"/>
+                        </svg>
+                        Studi Kasus: Pabrik Tekstil 20 m × 10 m × 6 m
+                    </div>
+
+                    <p style="margin-bottom:20px;color:var(--text-body);">Sebuah pabrik tekstil memiliki dimensi <strong>panjang 20 m</strong>, <strong>lebar 10 m</strong>, dan <strong>tinggi 6 m</strong>. Pabrik ini beroperasi dengan mesin-mesin yang menghasilkan debu serat dan panas sedang. Kita akan menggunakan nilai ACH 10 (titik tengah standar pabrik 8–12).</p>
+
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div class="step-body">
+                            <h4>Hitung Volume Ruangan (V)</h4>
+                            <p>V = Panjang × Lebar × Tinggi</p>
+                            <div class="step-result">V = 20 × 10 × 6 = <strong>1.200 m³</strong></div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div class="step-body">
+                            <h4>Tentukan Nilai ACH</h4>
+                            <p>Pabrik tekstil dengan debu sedang → ambil nilai tengah dari standar 8–12.</p>
+                            <div class="step-result">ACH = <strong>10</strong></div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div class="step-body">
+                            <h4>Hitung Kapasitas Hisap Total (Q)</h4>
+                            <p>Q = V × ACH</p>
+                            <div class="step-result">Q = 1.200 × 10 = <strong>12.000 m³/h</strong></div>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-num">4</div>
+                        <div class="step-body">
+                            <h4>Tentukan Jumlah Turbin Ventilator</h4>
+                            <p>Asumsikan satu unit turbin ventilator (model T-600, diameter throat 600 mm) memiliki kapasitas hisap rata-rata <strong>2.800 m³/h</strong> pada kecepatan angin 3 m/s. Maka jumlah unit yang dibutuhkan:</p>
+                            <div class="step-result">12.000 ÷ 2.800 = 4,28 → dibulatkan ke atas = <strong>5 unit</strong></div>
+                            <p style="margin-top:8px;font-size:14px;color:var(--text-muted);">Total kapasitas aktual 5 unit = 5 × 2.800 = 14.000 m³/h, memberikan margin keamanan 2.000 m³/h (±17%) untuk variasi kecepatan angin.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Ringkasan Hasil</h3>
+
+                <p>Dari studi kasus di atas, dapat disimpulkan bahwa pabrik dengan dimensi 20 m × 10 m × 6 m membutuhkan instalasi turbin ventilator sebagai berikut:</p>
+
+                <div class="summary-card">
+                    <div class="label">Rekomendasi Pemasangan</div>
+                    <h3>Kebutuhan Turbin Ventilator</h3>
+                    <div class="big-number">5<span class="unit">unit turbin</span></div>
+                    <div class="breakdown">
+                        <div><span>Volume ruangan</span><strong>1.200 m³</strong></div>
+                        <div><span>Nilai ACH yang dipilih</span><strong>10</strong></div>
+                        <div><span>Kapasitas hisap total</span><strong>12.000 m³/h</strong></div>
+                        <div><span>Kapasitas per unit (T-600)</span><strong>2.800 m³/h</strong></div>
+                        <div><span>Total kapasitas aktual</span><strong>14.000 m³/h</strong></div>
+                        <div><span>Margin keamanan</span><strong>± 17%</strong></div>
+                    </div>
+                </div>
+
+                <div class="callout">
+                    <div class="callout-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                        Tips Praktis
+                    </div>
+                    <p>Selalu bulatkan jumlah turbin ke atas untuk memberikan margin keamanan terhadap fluktuasi kecepatan angin. Distribusikan pemasangan secara merata pada bagian atap yang paling dekat dengan sumber panas utama agar aliran udara optimal.</p>
+                </div>
+            </section>
+
+            <!-- ===== BAB 5 ===== -->
+            <section class="chapter" id="bab-5">
+                <span class="chapter-num">Bab 05</span>
+                <h2>Checklist Sebelum Membeli Turbin</h2>
+
+                <p>Sebelum Anda mengeluarkan budget untuk membeli turbin ventilator, pastikan setiap poin di bawah ini sudah Anda periksa. Checklist ini membantu menghindari pembelian yang terburu-buru dan memastikan turbin yang dipilih benar-benar sesuai dengan kebutuhan pabrik Anda.</p>
+
+                <ul class="checklist">
+                    <li>
+                        <span class="check-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </span>
+                        <div><strong>Ukur ulang dimensi ruangan.</strong> Pastikan panjang, lebar, dan tinggi ruangan tercatat secara akurat — bukan dari gambar lama yang mungkin sudah tidak relevan setelah renovasi.</div>
+                    </li>
+                    <li>
+                        <span class="check-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </span>
+                        <div><strong>Identifikasi jenis proses produksi.</strong> Debu, uap kimia, panas, dan kelembaban menentukan apakah Anda perlu ACH minimum, tengah, atau maksimum pada kategori ruangan Anda.</div>
+                    </li>
+                    <li>
+                        <span class="check-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </span>
+                        <div><strong>Hitung kapasitas hisap total (Q).</strong> Gunakan rumus Q = V × ACH. Catat hasilnya sebagai target kapasitas minimum yang harus dipenuhi oleh total turbin yang dipasang.</div>
+                    </li>
+                    <li>
+                        <span class="check-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </span>
+                        <div><strong>Periksa spesifikasi kapasitas turbin.</strong> Setiap model punya kapasitas m³/h yang berbeda. Pastikan Anda membaca datasheet resmi, bukan hanya klaim penjual.</div>
+                    </li>
+                    <li>
+                        <span class="check-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </span>
+                        <div><strong>Pastikan material turbin tahan kondisi lingkungan.</strong> Pabrik pesisir butuh stainless steel atau material anti-karat; pabrik kimia butuh material tahan korosi uap asam.</div>
+                    </li>
+                    <li>
+                        <span class="check-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </span>
+                        <div><strong>Cek jaminan dan garansi produk.</strong> Turbin berkualitas biasanya memberikan garansi minimal 2–5 tahun. Hindari produk tanpa dokumentasi garansi yang jelas.</div>
+                    </li>
+                    <li>
+                        <span class="check-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </span>
+                        <div><strong>Verifikasi ketersediaan suku cadang & layanan purna jual.</strong> Turbin yang baik harus didukung oleh spare part yang mudah didapat dan teknisi yang bisa dipanggil jika ada masalah.</div>
+                    </li>
+                    <li>
+                        <span class="check-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                        </span>
+                        <div><strong>Bandingkan harga dari minimal 3 vendor.</strong> Harga yang terlalu murah biasanya berkorelasi dengan kualitas material atau kapasitas yang dibesar-besarkan. Pilih vendor yang transparan soal spesifikasi.</div>
+                    </li>
+                </ul>
+
+                <div class="callout">
+                    <div class="callout-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                        Penutup
+                    </div>
+                    <p>Menghitung kebutuhan ventilasi pabrik bukan pekerjaan yang harus ditebak. Dengan rumus yang tepat, tabel ACH yang jelas, dan checklist di atas, Anda dapat menentukan jumlah turbin secara objektif — menghindari overbudget sekaligus memastikan sirkulasi udara pabrik tetap aman untuk pekerja dan mesin.</p>
+                </div>
+            </section>
+
+            <!-- ===== CTA END ===== -->
+            <div class="cta-end no-print">
+                <h3>Simpan E-book Ini sebagai Referensi</h3>
+                <p>Unduh versi PDF dari panduan ini agar bisa dibaca kapan saja, bahkan saat offline. Klik tombol di bawah untuk mencetak atau menyimpan sebagai PDF.</p>
+                <button class="btn-print" onclick="window.print()" aria-label="Download atau Print PDF">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    <span>Download / Print PDF</span>
+                </button>
+            </div>
+
+        </div>
+    </article>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="container">
+            <a href="index.html" class="logo no-print">
+                <span class="logo-mark">
+                    <i class="fa-solid fa-fan" style="font-size: 18px; color: #fff;"></i>
+                </span>
+                TurbinHub
+            </a>
+            <div class="footer-bottom">
+                <p class="copyright">&copy; 2026 TurbinHub. All rights reserved. Marketplace Multi-Vendor Turbin Ventilator.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll handled by CSS scroll-behavior.
+        // Print button uses native window.print() — no external library needed.
+        // Optional: trigger print preview with Ctrl/Cmd+P already works natively.
+    </script>
+</body>
+</html>
